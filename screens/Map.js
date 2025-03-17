@@ -6,17 +6,19 @@ import IconButton from "../components/UI/IconButton";
 
 function Map({ navigation, route }) {
   const initialLocation = route.params && {
-    lat: route.params.initialLat,
-    lng: route.params.initialLng,
+    lat: route.params.startLocation.coordinates[1],
+    lng: route.params.startLocation.coordinates[0],
   };
+
+  const locations = route.params?.locations;
 
   const [selectedLocation, setSelectedLocation] = useState(initialLocation);
 
   const region = {
     latitude: initialLocation ? initialLocation.lat : 37.78,
     longitude: initialLocation ? initialLocation.lng : -122.43,
-    latitudeDelta: 0.0922,
-    longitudeDelta: 0.0421,
+    latitudeDelta: 0.5,
+    longitudeDelta: 0.5,
   };
 
   function selectLocationHandler(event) {
@@ -71,6 +73,18 @@ function Map({ navigation, route }) {
           }}
         />
       )}
+      {locations &&
+        locations.map((location) => (
+          <Marker
+            key={location._id}
+            coordinate={{
+              latitude: location.coordinates[1],
+              longitude: location.coordinates[0],
+            }}
+            title={`Day ${location.day}`}
+            description={location.address}
+          />
+        ))}
     </MapView>
   );
 }

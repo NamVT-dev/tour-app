@@ -1,5 +1,6 @@
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { Colors } from "../../constants/colors";
+import { useState } from "react";
 
 function PlaceItem({ place, onSelect }) {
   return (
@@ -10,10 +11,7 @@ function PlaceItem({ place, onSelect }) {
       <Image
         style={styles.image}
         source={{
-          uri: `${process.env.EXPO_APP_BACKEND_URI}images/tours/${place.imageCover}`,
-          headers: {
-            "ngrok-skip-browser-warning": true,
-          },
+          uri: place.imageCover,
         }}
       />
       <View style={styles.info}>
