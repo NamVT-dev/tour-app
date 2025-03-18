@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.gray700,
     borderRadius: 4,
     fontSize: 16,
+    color: Colors.primary50,
   },
   inputInvalid: {
     backgroundColor: Colors.error100,
