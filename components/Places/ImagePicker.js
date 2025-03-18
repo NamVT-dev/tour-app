@@ -50,23 +50,10 @@ function ImagePicker({ onTakeImage }) {
     onTakeImage(imageUri);
   }
 
-  let imagePreview = <Text>No image taken yet.</Text>;
-
-  if (pickedImage) {
-    imagePreview = <Image style={styles.image} source={{ uri: pickedImage }} />;
-  }
-
   return (
-    <View>
-      <View style={styles.imagePreview}>{imagePreview}</View>
-      <OutlinedButton
-        icon="camera"
-        title="Take Image"
-        onPress={takeImageHandler}
-      >
-        Take Image
-      </OutlinedButton>
-    </View>
+    <OutlinedButton icon="camera" title="Take Image" onPress={takeImageHandler}>
+      Take Image
+    </OutlinedButton>
   );
 }
 

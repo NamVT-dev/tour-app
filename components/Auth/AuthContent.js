@@ -8,7 +8,7 @@ import { Colors } from "../../constants/colors";
 
 function AuthContent({ isLogin, onAuthenticate }) {
   const navigation = useNavigation();
-  const [credentialsInvalid, setCreadentialsInvalid] = useState({
+  const [credentialsInvalid, setCredentialsInvalid] = useState({
     name: false,
     email: false,
     password: false,
@@ -38,7 +38,7 @@ function AuthContent({ isLogin, onAuthenticate }) {
       (!isLogin && (!passwordsAreEqual || !name.trim()))
     ) {
       Alert.alert("Invalid input", "Please check your entered credentials.");
-      setCreadentialsInvalid({
+      setCredentialsInvalid({
         name: !name.trim(),
         email: !emailIsValid,
         password: !passwordIsValid,
@@ -46,7 +46,11 @@ function AuthContent({ isLogin, onAuthenticate }) {
       });
       return;
     }
-    onAuthenticate({ email, password });
+    if (isLogin) {
+      onAuthenticate({ email, password });
+    } else {
+      onAuthenticate({ name, email, password });
+    }
   }
 
   return (

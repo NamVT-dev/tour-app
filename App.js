@@ -13,6 +13,8 @@ import AuthContextProvider, { AuthContext } from "./store/auth-context";
 import LoginScreen from "./screens/LoginScreen";
 import SignupScreen from "./screens/SignupScreen";
 import { useContext } from "react";
+import ProfileScreen from "./screens/ProfileScreen";
+import ManageProfileScreen from "./screens/ManageProfileScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -43,29 +45,34 @@ function AuthenticatedStack() {
         name="AllPlaces"
         component={AllPlaces}
         options={({ navigation }) => ({
-          title: "Your Favourite Places",
+          title: "All Tours",
           headerRight: ({ tintColor }) => (
             <IconButton
-              icon="add"
+              icon="person-circle"
               color={tintColor}
-              size={24}
-              onPress={() => navigation.navigate("AddPlace")}
+              size={30}
+              onPress={() => navigation.navigate("Profile")}
             />
           ),
         })}
-      />
-      <Stack.Screen
-        name="AddPlace"
-        component={AddPlace}
-        options={{
-          title: "Add a new Place",
-        }}
       />
       <Stack.Screen name="Map" component={Map} />
       <Stack.Screen
         name="PlaceDetails"
         component={PlaceDetails}
         options={{ title: "Loading place" }}
+      />
+      <Stack.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          title: "Your profile",
+        }}
+      />
+      <Stack.Screen
+        name="ManageProfile"
+        component={ManageProfileScreen}
+        options={{ title: "Edit your profile", presentation: "modal" }}
       />
     </Stack.Navigator>
   );

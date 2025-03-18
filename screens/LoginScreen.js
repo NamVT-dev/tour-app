@@ -3,7 +3,7 @@ import { Alert, Text, View } from "react-native";
 import { AuthContext } from "../store/auth-context";
 import AuthContent from "../components/Auth/AuthContent";
 import { login } from "../util/auth";
-import LoadingOverlay from "../components/UI/LoadingOverLay";
+import LoadingOverlay from "../components/UI/LoadingOverlay";
 
 function LoginScreen() {
   const [isAuthenticating, setIsAuthenticating] = useState(false);
@@ -11,7 +11,6 @@ function LoginScreen() {
   const authCtx = useContext(AuthContext);
 
   async function loginHandler({ email, password }) {
-    console.log("Hello");
     setIsAuthenticating(true);
     try {
       const token = await login(email, password);

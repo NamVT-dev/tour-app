@@ -28,7 +28,8 @@
       [
         "expo-image-picker",
         {
-          "cameraPermission": "The app needs access to your camera in order to take photo of your favorite places"
+          "cameraPermission": "The app needs access to your camera in order to take photo of your favorite places",
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
         }
       ],
       [
