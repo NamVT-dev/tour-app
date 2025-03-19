@@ -1,5 +1,5 @@
 import { useContext, useLayoutEffect, useState } from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Alert, Image, StyleSheet, Text, View } from "react-native";
 
 import { AuthContext } from "../store/auth-context";
 import { getProfile } from "../util/auth";
@@ -17,6 +17,10 @@ function ProfileScreen({ navigation }) {
     if (isFocused) {
       async function fetchProfile() {
         const profile = await getProfile(authCtx.token);
+        if (!profile) {
+          Alert.alert("Not logged in", "Please try login again");
+          authCtx.logout();
+        }
         setUserProfile(profile);
       }
       fetchProfile();
@@ -31,7 +35,19 @@ function ProfileScreen({ navigation }) {
           size={24}
           color={tintColor}
           onPress={() => {
-            authCtx.logout();
+            Alert.alert("Logging out", "Do you want to log out?", [
+              {
+                text: "No",
+                onPress: () => {},
+                style: "destructive",
+              },
+              {
+                text: "Yes",
+                onPress: () => {
+                  authCtx.logout();
+                },
+              },
+            ]);
           }}
         />
       ),

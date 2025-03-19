@@ -1,20 +1,21 @@
+import { useContext } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
 
-import AllPlaces from "./screens/AllPlaces";
-import AddPlace from "./screens/AddPlace";
-import Map from "./screens/Map";
-import IconButton from "./components/UI/IconButton";
-import { Colors } from "./constants/colors";
-import PlaceDetails from "./screens/PlaceDetails";
-import TourProvider from "./store/tour-context";
 import AuthContextProvider, { AuthContext } from "./store/auth-context";
+import TourProvider from "./store/tour-context";
+
+import { Colors } from "./constants/colors";
+import IconButton from "./components/UI/IconButton";
 import LoginScreen from "./screens/LoginScreen";
 import SignupScreen from "./screens/SignupScreen";
-import { useContext } from "react";
+import AllPlaces from "./screens/AllPlaces";
+import PlaceDetails from "./screens/PlaceDetails";
+import Map from "./screens/Map";
 import ProfileScreen from "./screens/ProfileScreen";
 import ManageProfileScreen from "./screens/ManageProfileScreen";
+import CheckoutScreen from "./screens/CheckoutScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -73,6 +74,14 @@ function AuthenticatedStack() {
         name="ManageProfile"
         component={ManageProfileScreen}
         options={{ title: "Edit your profile", presentation: "modal" }}
+      />
+      <Stack.Screen
+        name="CheckoutSession"
+        component={CheckoutScreen}
+        options={{
+          title: "Checkout",
+          presentation: "modal",
+        }}
       />
     </Stack.Navigator>
   );

@@ -1,18 +1,40 @@
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
-import OutlinedButton from "../components/UI/OutlinedButton";
-import { Colors } from "../constants/colors";
-import { useLayoutEffect } from "react";
+import { useContext, useLayoutEffect, useState } from "react";
+import { Alert, Image, ScrollView, StyleSheet, Text, View } from "react-native";
+
 import { formatDate, formatPrice } from "../util/format";
+import { getCheckoutSession } from "../util/checkout";
+
 import Button from "../components/UI/Button";
+import OutlinedButton from "../components/UI/OutlinedButton";
+import { AuthContext } from "../store/auth-context";
+
+import { Colors } from "../constants/colors";
+import LoadingOverlay from "../components/UI/LoadingOverlay";
 
 function PlaceDetails({ route, navigation }) {
   const place = route.params.place;
+  const authCtx = useContext(AuthContext);
+
+  const [isLoadingSession, setIsLoadingSession] = useState(false);
 
   function showOnMapHandler() {
     navigation.navigate("Map", {
       startLocation: place.startLocation,
       locations: place.locations,
     });
+  }
+
+  async function checkoutHandler() {
+    try {
+      setIsLoadingSession(true);
+      const checkoutUri = await getCheckoutSession(authCtx.token, place.id);
+      navigation.navigate("CheckoutSession", {
+        checkoutUri,
+      });
+    } catch (error) {
+      Alert.alert("Failed", "Something went wrong. Please try again later");
+    }
+    setIsLoadingSession(false);
   }
 
   useLayoutEffect(() => {
@@ -28,6 +50,8 @@ function PlaceDetails({ route, navigation }) {
       </View>
     );
   }
+
+  if (isLoadingSession) return <LoadingOverlay message="Loading session..." />;
 
   return (
     <ScrollView>
@@ -60,7 +84,7 @@ function PlaceDetails({ route, navigation }) {
         >
           View on Map
         </OutlinedButton>
-        <Button style={styles.priceButton}>
+        <Button style={styles.priceButton} onPress={checkoutHandler}>
           Only {formatPrice(place.price, "VND")}
         </Button>
       </View>
