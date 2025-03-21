@@ -21,7 +21,8 @@ const styles = StyleSheet.create({
   },
   message: {
     fontSize: 16,
+    fontWeight: "bold",
     marginBottom: 12,
-    color: Colors.accent500,
+    color: Colors.primary700,
   },
 });

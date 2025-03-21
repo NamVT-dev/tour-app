@@ -1,15 +1,25 @@
 import { useContext, useLayoutEffect, useState } from "react";
-import { Alert, Image, StyleSheet, Text, View } from "react-native";
+import { Alert, FlatList, Image, StyleSheet, Text, View } from "react-native";
+import { useIsFocused } from "@react-navigation/native";
 
-import { AuthContext } from "../store/auth-context";
-import { getProfile } from "../util/auth";
 import { Colors } from "../constants/colors";
+
 import Button from "../components/UI/Button";
 import IconButton from "../components/UI/IconButton";
-import { useIsFocused } from "@react-navigation/native";
+
+import { getProfile } from "../util/auth";
+import { getBooking } from "../util/checkout";
+
+import { AuthContext } from "../store/auth-context";
+import BookingItem from "../components/Profile/BookingItem";
+import { formatDate } from "../util/format";
+import LoadingOverlay from "../components/UI/LoadingOverlay";
 
 function ProfileScreen({ navigation }) {
   const [userProfile, setUserProfile] = useState({});
+  const [bookingList, setBookingList] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
   const authCtx = useContext(AuthContext);
   const isFocused = useIsFocused();
 
@@ -17,14 +27,32 @@ function ProfileScreen({ navigation }) {
     if (isFocused) {
       async function fetchProfile() {
         try {
+          setIsLoading(true);
           const profile = await getProfile(authCtx.token);
           setUserProfile(profile);
         } catch (error) {
           Alert.alert("Not logged in", "Please try login again");
           authCtx.logout();
         }
+        setIsLoading(false);
       }
       fetchProfile();
+    }
+  }, [isFocused, authCtx]);
+
+  useLayoutEffect(() => {
+    if (isFocused) {
+      async function fetchBooking() {
+        try {
+          setIsLoading(true);
+          const bookings = await getBooking(authCtx.token);
+          setBookingList(bookings);
+        } catch (error) {
+          Alert.alert("Error", "Some thing went wrong while fetching booking");
+        }
+        setIsLoading(false);
+      }
+      fetchBooking();
     }
   }, [isFocused, authCtx]);
 
@@ -61,6 +89,19 @@ function ProfileScreen({ navigation }) {
     });
   }
 
+  function bookingItemHandler({ item }) {
+    return (
+      <BookingItem
+        tourName={item.tour?.name}
+        paid={item.paid}
+        price={item.price}
+        createdAt={formatDate(item.createdAt)}
+      />
+    );
+  }
+
+  if (isLoading) return <LoadingOverlay message="Fetching user data..." />;
+
   return (
     <View style={styles.profileContainer}>
       <View style={styles.imageContainer}>
@@ -81,6 +122,18 @@ function ProfileScreen({ navigation }) {
           Edit profile
         </Button>
       </View>
+      <Text style={styles.bookingTitle}>Booking</Text>
+      <View style={[styles.row, styles.header]}>
+        <Text style={styles.cell}>Tour Name</Text>
+        <Text style={styles.cell}>Price</Text>
+        <Text style={styles.cell}>Paid</Text>
+        <Text style={styles.cell}>Created At</Text>
+      </View>
+      <FlatList
+        data={bookingList}
+        keyExtractor={(item) => item.id}
+        renderItem={bookingItemHandler}
+      />
     </View>
   );
 }
@@ -123,5 +176,30 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     alignItems: "center",
+  },
+  row: {
+    flexDirection: "row",
+    paddingVertical: 8,
+    borderBottomWidth: 1,
+    borderColor: Colors.primary500,
+    alignItems: "center",
+    backgroundColor: Colors.primary700,
+    borderTopRightRadius: 8,
+    borderTopLeftRadius: 8,
+  },
+  cell: {
+    flex: 1,
+    textAlign: "center",
+    color: Colors.primary50,
+    fontSize: 14,
+    fontWeight: "bold",
+  },
+  bookingTitle: {
+    textAlign: "center",
+    marginTop: 24,
+    marginBottom: 8,
+    fontSize: 24,
+    fontWeight: "bold",
+    color: Colors.primary400,
   },
 });

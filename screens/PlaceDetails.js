@@ -88,6 +88,27 @@ function PlaceDetails({ route, navigation }) {
           Only {formatPrice(place.price, "VND")}
         </Button>
       </View>
+      <View style={styles.guidesContainer}>
+        <View style={styles.guidesTitleContainer}>
+          <Text style={styles.guidesTitle}>Guides</Text>
+          <Text style={styles.guidesTitle}>Role</Text>
+        </View>
+        {place.guides.length > 0 &&
+          place.guides.map((guide) => (
+            <View key={guide._id} style={styles.guideInfoContainer}>
+              <View style={styles.guide}>
+                <Image
+                  style={styles.guidesImage}
+                  source={{ uri: guide.photo }}
+                />
+                <Text style={styles.guideName}>{guide.name}</Text>
+              </View>
+              <View style={styles.guide}>
+                <Text style={styles.guideRole}>{guide.role.toUpperCase()}</Text>
+              </View>
+            </View>
+          ))}
+      </View>
     </ScrollView>
   );
 }
@@ -151,5 +172,48 @@ const styles = StyleSheet.create({
   },
   mapButton: {
     marginTop: 16,
+  },
+  guidesContainer: {
+    marginBottom: 36,
+    marginHorizontal: 36,
+  },
+  guideInfoContainer: {
+    flexDirection: "row",
+    width: "100%",
+    justifyContent: "space-between",
+  },
+  guide: {
+    flexDirection: "row",
+    marginVertical: 4,
+    alignItems: "center",
+  },
+  guideName: {
+    color: Colors.accent500,
+    marginLeft: 4,
+  },
+  guideRole: {
+    color: Colors.primary700,
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+  guidesTitleContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 8,
+    paddingBottom: 4,
+    width: "100%",
+    borderBottomWidth: 1,
+    borderColor: Colors.primary200,
+  },
+  guidesTitle: {
+    textAlign: "left",
+    fontSize: 20,
+    fontWeight: "bold",
+    color: Colors.primary50,
+  },
+  guidesImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
   },
 });
