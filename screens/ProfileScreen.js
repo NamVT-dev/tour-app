@@ -16,12 +16,13 @@ function ProfileScreen({ navigation }) {
   useLayoutEffect(() => {
     if (isFocused) {
       async function fetchProfile() {
-        const profile = await getProfile(authCtx.token);
-        if (!profile) {
+        try {
+          const profile = await getProfile(authCtx.token);
+          setUserProfile(profile);
+        } catch (error) {
           Alert.alert("Not logged in", "Please try login again");
           authCtx.logout();
         }
-        setUserProfile(profile);
       }
       fetchProfile();
     }

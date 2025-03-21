@@ -1,6 +1,5 @@
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { Colors } from "../../constants/colors";
-import { useState } from "react";
 
 function PlaceItem({ place, onSelect }) {
   return (
