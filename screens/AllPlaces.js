@@ -45,6 +45,7 @@ function AllPlaces({ navigation }) {
 
   async function verifyPermissions() {
     if (
+      !locationPermissionInformation ||
       locationPermissionInformation.status === PermissionStatus.UNDETERMINED
     ) {
       const permissionResponse = await requestPermission();
@@ -63,7 +64,7 @@ function AllPlaces({ navigation }) {
   }
 
   async function getFilterTourHandler(distance) {
-    if (isNaN(+distance) && +distance < 0)
+    if (isNaN(+distance) || +distance < 0)
       return Alert.alert("Invalid input", "Please insert a number");
     const hasPermission = await verifyPermissions();
 
@@ -87,8 +88,14 @@ function AllPlaces({ navigation }) {
 
   useEffect(() => {
     async function fetchTour() {
-      const tours = await getAllTour();
-      tourCtx.setToursList(tours);
+      setIsLoading(true);
+      try {
+        const tours = await getAllTour();
+        tourCtx.setToursList(tours);
+      } catch (error) {
+        Alert.alert("Failed!", "Something went wrong");
+      }
+      setIsLoading(false);
     }
 
     fetchTour();

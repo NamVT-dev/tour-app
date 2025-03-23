@@ -1,11 +1,12 @@
 import { StyleSheet, Text, View } from "react-native";
 import { Colors } from "../../constants/colors";
+import { formatPrice } from "../../util/format";
 
 function BookingItem({ tourName, price, paid, createdAt }) {
   return (
     <View style={styles.row}>
       <Text style={styles.cell}>{tourName}</Text>
-      <Text style={styles.cell}>{price}VND</Text>
+      <Text style={styles.cell}>{formatPrice(price, "VND")}</Text>
       <Text style={styles.cell}>{paid ? "✅ Paid" : "❌ Unpaid"}</Text>
       <Text style={styles.cell}>{createdAt}</Text>
     </View>

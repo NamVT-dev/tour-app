@@ -57,6 +57,10 @@ function PlaceDetails({ route, navigation }) {
     <ScrollView>
       <Image style={styles.image} source={{ uri: place.imageCover }} />
       <View style={styles.tourContainer}>
+        <View style={styles.descriptionContainer}>
+          <Text style={styles.descriptionTitle}>Description</Text>
+          <Text style={styles.description}>{place.description}</Text>
+        </View>
         <View style={styles.startLocationContainer}>
           <Text style={styles.startLocation}>Start Location</Text>
         </View>
@@ -141,6 +145,22 @@ const styles = StyleSheet.create({
   date: {
     color: Colors.accent500,
   },
+  descriptionContainer: {
+    marginTop: 16,
+    width: "100%",
+    alignItems: "center",
+    paddingHorizontal: 36,
+  },
+  descriptionTitle: {
+    color: Colors.primary50,
+    fontWeight: "bold",
+    fontSize: 20,
+  },
+  description: {
+    color: Colors.primary200,
+    marginTop: 16,
+    fontSize: 14,
+  },
   priceButton: {
     marginVertical: 16,
     justifyContent: "center",
@@ -149,7 +169,7 @@ const styles = StyleSheet.create({
     backgroundColor: "green",
   },
   startLocationContainer: {
-    marginTop: 16,
+    marginTop: 20,
   },
   startLocation: {
     color: Colors.primary50,

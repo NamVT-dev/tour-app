@@ -82,7 +82,7 @@ function ManageProfileScreen({ navigation, route }) {
 
     if (!result.canceled) {
       setPhoto(result.assets[0]);
-    }
+    } else return;
 
     try {
       setIsAuthenticating(true);
