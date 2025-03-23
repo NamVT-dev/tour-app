@@ -131,7 +131,7 @@ function ProfileScreen({ navigation }) {
       </View>
       <FlatList
         data={bookingList}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item._id}
         renderItem={bookingItemHandler}
       />
     </View>
